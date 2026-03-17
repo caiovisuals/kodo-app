@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght,CRSV@100..900,0&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: "Geologica";
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+:-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-middleground);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-foreground);
+}
+
+:root,
+.dark {
+    --color-background: #252525;
+    --color-middleground: #333;
+    --color-foreground: #3a3a3a;
+}
