@@ -1,9 +1,11 @@
+import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "expo-router"
 import { useRef } from "react"
-import { Animated, Image, Pressable, ScrollView, Text, View } from "react-native"
+import { ActivityIndicator, Animated, Image, Pressable, ScrollView, Share, Text, View } from "react-native"
 import Svg from "react-native-svg"
 
 export default function Profile() {
+    const { user, isLoading } = useAuth()
     const router = useRouter()
 
     const scaleEdit = useRef(new Animated.Value(1)).current
@@ -27,14 +29,37 @@ export default function Profile() {
         }).start()
     }
 
+    const handleShare = async () => {
+        if (!user) return
+
+        const profileUrl = `https://kodo-app.com/user/${user?.username || user?.id}`
+
+        try {
+            await Share.share({
+                message: `Confira meu perfil:\n${profileUrl}`,
+                title: "Meu perfil",
+            })
+        } catch (error) {
+            console.log("Erro ao compartilhar:", error)
+        }
+    }
+
+    if (isLoading) {
+        return (
+            <View className="flex-1 items-center justify-center">
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    }
+
     return (
         <ScrollView showsVerticalScrollIndicator={false} className="px-6 py-6 lg:py-8 lg:px-8 xl:py-16">
             <View className="bg-[#505050] w-full h-[120] rounded-2xl" />
             <View className="flex flex-col items-center justify-center gap-3 -mt-[60]">
-                <Image className="bg-black" style={{ width: 100, height: 100, borderRadius: 60 }} />
+                <Image source={user?.avatar ? { uri: user.avatar } : undefined} className="bg-black" style={{ width: 100, height: 100, borderRadius: 60 }} />
                 <View className="flex flex-col items-center justify-center">
-                    <Text className="font-semibold text-lg leading-tight">@caiotes</Text>
-                    <Text className="font-bold text-2xl leading-tight">Caio Oliveira</Text>
+                    <Text className="font-semibold text-lg leading-tight">@{user?.username || "nome-de-usuario"}</Text>
+                    <Text className="font-bold text-2xl leading-tight">{user?.name || "Usuário"}</Text>
                 </View>
             </View>
             <View className="w-full flex flex-row items-center justify-center gap-2 mt-[25]">
@@ -46,7 +71,7 @@ export default function Profile() {
                     </Pressable>
                 </Animated.View>
                 <Animated.View style={{ transform: [{ scale: scaleShare }] }}>
-                    <Pressable onPressIn={() => animateIn(scaleShare)} onPressOut={() => animateOut(scaleShare)} className="w-full flex flex-row gap-2 items-center px-4 py-2 rounded-xl bg-slate-400">
+                    <Pressable onPress={handleShare} onPressIn={() => animateIn(scaleShare)} onPressOut={() => animateOut(scaleShare)} className="w-full flex flex-row gap-2 items-center px-4 py-2 rounded-xl bg-slate-400">
                         <Svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M12 2v13"/><path d="m16 6-4-4-4 4"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
                         </Svg>
