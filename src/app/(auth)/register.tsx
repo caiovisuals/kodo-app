@@ -108,7 +108,7 @@ export default function Register() {
                         onPressOut={handlePressOut}
                         disabled={isLoading}
                         className="w-full rounded-xl items-center bg-slate-600" style={{ borderWidth: 2, borderBottomWidth: 6 }}
-                        >
+                    >
                         <View className="w-full px-4 py-3 rounded-xl">
                             <Text className="text-white text-center text-base">Criar</Text>
                         </View>

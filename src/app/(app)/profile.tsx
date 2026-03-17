@@ -1,8 +1,11 @@
+import { useRouter } from "expo-router"
 import { useRef } from "react"
 import { Animated, Image, Pressable, ScrollView, Text, View } from "react-native"
 import Svg from "react-native-svg"
 
 export default function Profile() {
+    const router = useRouter()
+
     const scaleEdit = useRef(new Animated.Value(1)).current
     const scaleShare = useRef(new Animated.Value(1)).current
 
@@ -26,9 +29,7 @@ export default function Profile() {
 
     return (
         <ScrollView showsVerticalScrollIndicator={false} className="px-6 py-6 lg:py-8 lg:px-8 xl:py-16">
-            <View className="bg-[#505050] w-full h-[120] rounded-2xl">
-
-            </View>
+            <View className="bg-[#505050] w-full h-[120] rounded-2xl" />
             <View className="flex flex-col items-center justify-center gap-3 -mt-[60]">
                 <Image className="bg-black" style={{ width: 100, height: 100, borderRadius: 60 }} />
                 <View className="flex flex-col items-center justify-center">
@@ -38,7 +39,7 @@ export default function Profile() {
             </View>
             <View className="w-full flex flex-row items-center justify-center gap-2 mt-[25]">
                 <Animated.View style={{ transform: [{ scale: scaleEdit  }] }}>
-                    <Pressable onPressIn={() => animateIn(scaleEdit)} onPressOut={() => animateOut(scaleEdit)} className="w-full px-6 py-2 rounded-xl bg-slate-400">
+                    <Pressable onPress={() => router.push("/edit")} onPressIn={() => animateIn(scaleEdit)} onPressOut={() => animateOut(scaleEdit)} className="w-full px-6 py-2 rounded-xl bg-slate-400">
                         <Text className="font-semibold">
                             Editar
                         </Text>
