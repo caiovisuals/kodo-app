@@ -1,9 +1,29 @@
 import { useRouter } from "expo-router"
-import { useState } from "react"
-import { Pressable, Text, TextInput, View } from "react-native"
+import { useRef, useState } from "react"
+import { Animated, Pressable, Text, TextInput, View } from "react-native"
 
 export default function Login() {
     const router = useRouter()
+
+    const scale = useRef(new Animated.Value(1)).current
+    
+    const handlePressIn = () => {
+        Animated.spring(scale, {
+            toValue: 0.95,
+            useNativeDriver: true,
+            speed: 50,
+            bounciness: 0,
+        }).start()
+    }
+
+    const handlePressOut = () => {
+        Animated.spring(scale, {
+            toValue: 1,
+            useNativeDriver: true,
+            speed: 50,
+            bounciness: 4,
+        }).start()
+    }
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -25,26 +45,31 @@ export default function Login() {
                     placeholder="Email"
                     value={email}
                     onChangeText={setEmail}
-                    className="w-full border border-slate-300 rounded-xl px-4 py-3"
+                    className="w-full border-slate-300 rounded-xl px-4 py-3" style={{ borderWidth: 2, borderBottomWidth: 4 }}
                 />
                 <TextInput
                     placeholder="Senha"
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
-                    className="w-full border border-slate-300 rounded-xl px-4 py-3"
+                    className="w-full border-slate-300 rounded-xl px-4 py-3" style={{ borderWidth: 2, borderBottomWidth: 4 }}
                 />
-                <Pressable
-                    onPress={handleLogin}
-                    className="w-full bg-black rounded-xl py-3 items-center"
-                >
-                    <Text className="text-white font-bold">Entrar</Text>
-                </Pressable>
+                <Animated.View style={{ transform: [{ scale }] }}>
+                    <Pressable
+                        onPress={handleLogin}
+                        onPressIn={handlePressIn} onPressOut={handlePressOut}
+                        className="w-full rounded-xl items-center bg-slate-600" style={{ borderWidth: 2, borderBottomWidth: 6 }}
+                    >
+                        <View className="w-full px-4 py-3 rounded-xl">
+                            <Text className="text-white text-center text-base">Entrar</Text>
+                        </View>
+                    </Pressable>
+                </Animated.View>
             </View>
-            <View className="flex flex-row gap-2">
+            <View className="flex flex-row gap-1">
                 <Text>Ainda não tem uma conta?</Text>
                 <Pressable onPress={() => router.push("/register")}>
-                    <Text>Criar</Text>
+                    <Text className="font-bold">Criar</Text>
                 </Pressable>
             </View>
         </View>

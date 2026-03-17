@@ -5,9 +5,10 @@ import { Animated, Pressable, Text, View } from "react-native"
 export default function Index() {
     const router = useRouter()
 
-    const scale = useRef(new Animated.Value(1)).current
+    const scaleRegister = useRef(new Animated.Value(1)).current
+    const scaleLogin = useRef(new Animated.Value(1)).current
 
-    const handlePressIn = () => {
+    const animateIn = (scale: Animated.Value) => {
         Animated.spring(scale, {
             toValue: 0.95,
             useNativeDriver: true,
@@ -16,7 +17,7 @@ export default function Index() {
         }).start()
     }
 
-    const handlePressOut = () => {
+    const animateOut = (scale: Animated.Value) => {
         Animated.spring(scale, {
             toValue: 1,
             useNativeDriver: true,
@@ -31,20 +32,24 @@ export default function Index() {
                 <Text className="text-5xl font-bold">KODO APP</Text>
             </View>
             <View className="w-full flex flex-col xl:flex-row gap-2">
-                <Pressable onPress={() => router.push("/register")} style={{ borderWidth: 2, borderBottomWidth: 6 }} className="w-full xl:w-[50%] rounded-xl bg-slate-600 border-slate-800">
-                    <View className="px-4 py-3 rounded-xl bg-slate-600">
-                        <Text className="text-white text-center text-base">
-                            Dar o primeiro passo
-                        </Text>
-                    </View>
-                </Pressable>
-                <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={() => router.push("/login")} style={{borderWidth: 2, borderBottomWidth: 6 }} className="w-full xl:w-[50%] rounded-xl bg-white border-slate-700">
-                    <View className="px-4 py-3 rounded-xl bg-white">
-                        <Text className="text-black text-center text-base">
-                            Eu já tenho conta
-                        </Text>
-                    </View>
-                </Pressable>
+                <Animated.View style={{ transform: [{ scale: scaleLogin  }] }} className="w-full xl:w-[50%]">
+                    <Pressable onPressIn={() => animateIn(scaleLogin)} onPressOut={() => animateOut(scaleLogin)} onPress={() => router.push("/register")} style={{ borderWidth: 2, borderBottomWidth: 6 }} className="rounded-xl bg-slate-600 border-slate-800">
+                        <View className="px-4 py-3 rounded-xl bg-slate-600">
+                            <Text className="text-white text-center text-base">
+                                Dar o primeiro passo
+                            </Text>
+                        </View>
+                    </Pressable>
+                </Animated.View>
+                <Animated.View style={{ transform: [{ scale: scaleRegister }] }} className="w-full xl:w-[50%]">
+                    <Pressable onPressIn={() => animateIn(scaleRegister)} onPressOut={() => animateOut(scaleRegister)} onPress={() => router.push("/login")} style={{borderWidth: 2, borderBottomWidth: 6 }} className="rounded-xl bg-white border-slate-700">
+                        <View className="px-4 py-3 rounded-xl bg-white">
+                            <Text className="text-black text-center text-base">
+                                Eu já tenho conta
+                            </Text>
+                        </View>
+                    </Pressable>
+                </Animated.View>
             </View>
         </View>
     )

@@ -1,12 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Geologica:wght,CRSV@100..900,0&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-* {
-    font-family: "Geologica";
-}
 
 html {
     scroll-behavior: smooth;

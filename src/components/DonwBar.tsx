@@ -5,7 +5,7 @@ export default function DonwBar() {
     const router = useRouter()
 
     return (
-        <View className="flex flex-row items-center justify-between gap-2">
+        <View className="flex flex-row items-center justify-between gap-2 border-t-2 border-slate-400">
             <Pressable
                 onPress={() => router.push("/profile")}
                 className="px-3 py-2 rounded-lg bg-slate-200"
