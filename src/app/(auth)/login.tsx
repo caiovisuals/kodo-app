@@ -1,3 +1,4 @@
+import ShowPassword from "@/components/auth/ShowPassword"
 import { useRouter } from "expo-router"
 import { useRef, useState } from "react"
 import { Animated, Pressable, Text, TextInput, View } from "react-native"
@@ -28,6 +29,8 @@ export default function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const [showPassword, setShowPassword] = useState(false)
+
     const handleLogin = () => {
         if (!email || !password) {
             return
@@ -35,7 +38,7 @@ export default function Login() {
     }
 
     return (
-        <View className="flex-1 items-center justify-center p-6 gap-4">
+        <View className="flex-1 items-center justify-center gap-4 px-6 py-6 lg:py-8 lg:px-8 xl:py-16">
             <View className="flex flex-col w-full">
                 <Text className="text-slate-600">Bem-vindo(a) de volta!</Text>
                 <Text className="text-3xl font-bold">Login</Text>
@@ -47,13 +50,16 @@ export default function Login() {
                     onChangeText={setEmail}
                     className="w-full border-slate-300 rounded-xl px-4 py-3" style={{ borderWidth: 2, borderBottomWidth: 4 }}
                 />
-                <TextInput
-                    placeholder="Senha"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                    className="w-full border-slate-300 rounded-xl px-4 py-3" style={{ borderWidth: 2, borderBottomWidth: 4 }}
-                />
+                <View className="relative gap-4">
+                    <TextInput
+                        placeholder="Senha"
+                        secureTextEntry={!showPassword}
+                        value={password}
+                        onChangeText={setPassword}
+                        className="w-full border-slate-300 rounded-xl px-4 py-3" style={{ borderWidth: 2, borderBottomWidth: 4 }}
+                    />
+                    <ShowPassword show={showPassword} setShow={setShowPassword} />
+                </View>
                 <Animated.View style={{ transform: [{ scale }] }}>
                     <Pressable
                         onPress={handleLogin}

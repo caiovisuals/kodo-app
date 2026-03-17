@@ -1,12 +1,15 @@
-import { default as DonwBar, default as Header } from "@/components/Header"
+import DonwBar from "@/components/DonwBar"
+import Header from "@/components/Header"
 import { Slot } from "expo-router"
 import { View } from "react-native"
 
 export default function AppLayout() {
     return (
-        <View className="flex flex-col">
+        <View className="flex-1">
             <Header />
-            <Slot />
+            <View className="flex-1">
+                <Slot />
+            </View>
             <DonwBar />
         </View>
     )

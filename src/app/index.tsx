@@ -27,7 +27,7 @@ export default function Index() {
     }
 
     return (
-        <View className="flex-1 flex-col justify-between gap-2 p-6">
+        <View className="flex-1 flex-col justify-between gap-2 px-6 py-6 lg:py-8 lg:px-8 xl:py-16">
             <View className="flex-1 items-center justify-center">
                 <Text className="text-5xl font-bold">KODO APP</Text>
             </View>

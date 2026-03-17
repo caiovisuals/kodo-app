@@ -13,7 +13,7 @@ export default function VerifyEmail() {
     }
 
     return (
-        <View className="flex-1 items-center justify-center p-6 gap-4">
+        <View className="flex-1 items-center justify-center gap-4 px-6 py-6 lg:py-8 lg:px-8 xl:py-16">
             <View className="flex flex-col w-full">
                 <Text className="text-slate-600">Passo 2 de 2</Text>
                 <Text className="text-3xl font-bold">Validar seu E-mail</Text>

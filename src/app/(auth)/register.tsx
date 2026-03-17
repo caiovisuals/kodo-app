@@ -1,3 +1,4 @@
+import ShowPassword from "@/components/auth/ShowPassword"
 import { useRouter } from "expo-router"
 import { useRef, useState } from "react"
 import { Animated, Pressable, Text, TextInput, View } from "react-native"
@@ -28,15 +29,18 @@ export default function Register() {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+
+    const [showPassword, setShowPassword] = useState(false)
 
     const handleNext = () => {
-        if (!name || !email || !password) {
+        if (!name || !email || !password || !confirmPassword) {
             return
         }
     }
 
     return (
-        <View className="flex-1 items-center justify-center p-6 gap-4">
+        <View className="flex-1 items-center justify-center gap-4 px-6 py-6 lg:py-8 lg:px-8 xl:py-16">
             <View className="flex flex-col w-full">
                 <Text className="text-slate-600">Passo 1 de 2</Text>
                 <Text className="text-3xl font-bold">Registrar</Text>
@@ -54,11 +58,21 @@ export default function Register() {
                     onChangeText={setEmail}
                     className="w-full border-slate-300 rounded-xl px-4 py-3" style={{ borderWidth: 2, borderBottomWidth: 4 }}
                 />
+                <View className="relative gap-4">
+                    <TextInput
+                        placeholder="Senha"
+                        secureTextEntry={!showPassword}
+                        value={password}
+                        onChangeText={setPassword}
+                        className="w-full border-slate-300 rounded-xl px-4 py-3" style={{ borderWidth: 2, borderBottomWidth: 4 }}
+                    />
+                    <ShowPassword show={showPassword} setShow={setShowPassword} />
+                </View>
                 <TextInput
-                    placeholder="Senha"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
+                    placeholder="Confirmar Senha"
+                    secureTextEntry={!showPassword}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
                     className="w-full border-slate-300 rounded-xl px-4 py-3" style={{ borderWidth: 2, borderBottomWidth: 4 }}
                 />
                 <Animated.View style={{ transform: [{ scale }] }}>
