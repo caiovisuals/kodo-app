@@ -1,8 +1,10 @@
-import { useRouter } from "expo-router"
+import { useAuth } from "@/contexts/AuthContext"
+import { Redirect, useRouter } from "expo-router"
 import { useRef } from "react"
-import { Animated, Pressable, Text, View } from "react-native"
+import { ActivityIndicator, Animated, Pressable, Text, View } from "react-native"
 
 export default function Index() {
+    const { user, isLoading } = useAuth()
     const router = useRouter()
 
     const scaleRegister = useRef(new Animated.Value(1)).current
@@ -24,6 +26,18 @@ export default function Index() {
             speed: 50,
             bounciness: 4,
         }).start()
+    }
+
+    if (isLoading) {
+        return (
+            <View className="flex-1 items-center justify-center">
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    }
+
+    if (user) {
+        return <Redirect href="/home" />
     }
 
     return (

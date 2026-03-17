@@ -1,6 +1,7 @@
 "use client"
 
 import { Dispatch, SetStateAction } from "react"
+import { Pressable } from "react-native"
 import Svg from "react-native-svg"
 
 interface ShowPasswordProps {
@@ -10,11 +11,10 @@ interface ShowPasswordProps {
 
 export default function ShowPassword({ show, setShow }: ShowPasswordProps) {
     return (
-        <button
-            type="button"
-            onClick={() => setShow(prev => !prev)}
+        <Pressable
+            onPress={() => setShow(prev => !prev)}
             aria-pressed={show}
-            aria-label={show ? "Ocultar senha" : "Mostrar senha"}
+            accessibilityLabel={show ? "Ocultar senha" : "Mostrar senha"}
             className="absolute right-[15px] top-[12px] flex items-center justify-center bg-transparent outline-none"
             tabIndex={-1}
         >
@@ -42,6 +42,6 @@ export default function ShowPassword({ show, setShow }: ShowPasswordProps) {
                     </>
                 )}
             </Svg>
-        </button>
+        </Pressable>
     )
 }

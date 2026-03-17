@@ -1,9 +1,11 @@
 import ShowPassword from "@/components/auth/ShowPassword"
+import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "expo-router"
 import { useRef, useState } from "react"
 import { Animated, Pressable, Text, TextInput, View } from "react-native"
 
 export default function Login() {
+    const { signIn } = useAuth()
     const router = useRouter()
 
     const scale = useRef(new Animated.Value(1)).current
@@ -29,11 +31,27 @@ export default function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const [error, setError] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
+
     const [showPassword, setShowPassword] = useState(false)
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if (!email || !password) {
+            setError("Preencha todos os campos.")
             return
+        }
+ 
+        setError("")
+        setIsLoading(true)
+ 
+        try {
+            await signIn(email, password)
+            router.replace("/home")
+        } catch (err: any) {
+            setError(err.message ?? "Erro ao fazer login.")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -63,7 +81,8 @@ export default function Login() {
                 <Animated.View style={{ transform: [{ scale }] }}>
                     <Pressable
                         onPress={handleLogin}
-                        onPressIn={handlePressIn} onPressOut={handlePressOut}
+                        onPressIn={handlePressIn} 
+                        onPressOut={handlePressOut}
                         className="w-full rounded-xl items-center bg-slate-600" style={{ borderWidth: 2, borderBottomWidth: 6 }}
                     >
                         <View className="w-full px-4 py-3 rounded-xl">

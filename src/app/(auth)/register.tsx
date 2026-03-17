@@ -1,9 +1,11 @@
 import ShowPassword from "@/components/auth/ShowPassword"
+import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "expo-router"
 import { useRef, useState } from "react"
 import { Animated, Pressable, Text, TextInput, View } from "react-native"
 
 export default function Register() {
+    const { signUp } = useAuth()
     const router = useRouter()
 
     const scale = useRef(new Animated.Value(1)).current
@@ -31,11 +33,35 @@ export default function Register() {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
 
+    const [error, setError] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
+
     const [showPassword, setShowPassword] = useState(false)
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (!name || !email || !password || !confirmPassword) {
+            setError("Preencha todos os campos.")
             return
+        }
+        if (password !== confirmPassword) {
+            setError("As senhas não coincidem.")
+            return
+        }
+        if (password.length < 6) {
+            setError("A senha precisa ter pelo menos 6 caracteres.")
+            return
+        }
+
+        setError("")
+        setIsLoading(true)
+
+        try {
+            await signUp(name, email, password)
+            router.replace("/home")
+        } catch (err: any) {
+            setError(err.message ?? "Erro ao criar conta.")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -78,7 +104,9 @@ export default function Register() {
                 <Animated.View style={{ transform: [{ scale }] }}>
                     <Pressable
                         onPress={handleNext}
-                        onPressIn={handlePressIn} onPressOut={handlePressOut}
+                        onPressIn={handlePressIn} 
+                        onPressOut={handlePressOut}
+                        disabled={isLoading}
                         className="w-full rounded-xl items-center bg-slate-600" style={{ borderWidth: 2, borderBottomWidth: 6 }}
                         >
                         <View className="w-full px-4 py-3 rounded-xl">
